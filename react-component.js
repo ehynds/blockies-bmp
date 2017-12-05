@@ -1,32 +1,21 @@
 // Usage:
 //   npm install blockies-identicon
-//   const Blockies = require("blockies/react-component");
-//   <Blockies opts={{seed: "foo", color: "#dfe", bgcolor: "#a71", size: 15, scale: 3, spotcolor: "#000"}}/>
+//   const Blockies = require("blockies-bmp/react-component");
+//   <Blockies opts={{seed: "foo"}}/>
 
 var blockies = require("./blockies");
 
 class BlockiesIdenticon extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  getOpts () {
-    return {
-      seed: this.props.opts.seed || "foo",
-      color: this.props.opts.color || "#dfe",
-      bgcolor: this.props.opts.bgcolor || "#a71",
-      size: this.props.opts.size || 15,
-      scale: this.props.opts.scale || 3,
-      spotcolor: this.props.opts.spotcolor || "#000"
-    };
-  }
-  componentDidMount() {
-    this.draw();
-  }
-  draw() {
-    blockies.render(this.getOpts(), this.canvas);
+  getUrl () {
+    return blockies.createDataURL({
+      seed: this.props.opts.seed,
+      color: this.props.opts.color,
+      bgcolor: this.props.opts.bgcolor,
+      spotcolor: this.props.opts.spotcolor
+    });
   }
   render() {
-    return React.createElement("canvas", {ref: canvas => this.canvas = canvas});
+    return React.createElement("img", {src: this.getUrl()});
   }
 }
 

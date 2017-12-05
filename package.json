@@ -1,19 +1,20 @@
 {
-  "name": "ethereum-blockies",
+  "name": "blockies-bmp",
   "version": "0.1.1",
-  "description": "A tiny library for generating blocky identicons.",
+  "description": "A tiny library for generating blocky identicons in BMP format, with react-native support",
   "main": "blockies.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alexvandesande/blockies.git"
+    "url": "git+https://github.com/dvdbng/blockies-bmp.git"
   },
-  "author": "Erin Dachtler, Alex Van de Sande",
+  "author": "Erin Dachtler, Alex Van de Sande, David Bengoa",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/alexvandesande/blockies/issues"
+    "url": "https://github.com/dvdbng/blockies-bmp/issues"
   },
-  "homepage": "https://github.com/alexvandesande/blockies#readme"
+  "homepage": "https://github.com/dvdbng/blockies-bmp#readme",
+  "dependencies": {}
 }
