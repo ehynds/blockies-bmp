@@ -24,7 +24,7 @@ const BlockiesIdenticon = (props) => {
   });
   return (<Image
     source={{ uri }}
-    style={style || { width: size, height: size }}
+    style={{ width: size, height: size, ...style }}
     {...otherprops}
   />);
 };
