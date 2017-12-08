@@ -1,7 +1,4 @@
 var randseed = new Array(4); // Xorshift: [x, y, z, w] 32 bit values
-var SIZE = 8;
-var SCALE = 6;
-var WIDTH = SIZE * SCALE;
 
 function seedrand(seed) {
   for (var i = 0; i < randseed.length; i++) {
@@ -94,8 +91,8 @@ function buildOpts(opts) {
 
   seedrand(newOpts.seed);
 
-  newOpts.size = SIZE;
-  newOpts.scale = SCALE;
+  newOpts.size = opts.size || 8;
+  newOpts.scale = opts.scale || 4;
   newOpts.color = opts.color || createColor();
   newOpts.bgcolor = opts.bgcolor || createColor();
   newOpts.spotcolor = opts.spotcolor || createColor();
@@ -103,33 +100,43 @@ function buildOpts(opts) {
   return newOpts;
 }
 
-function createIcon(optsParam) {
-  var opts = buildOpts(optsParam || {});
-  var data = createImageData(SIZE);
 
-  var outBuf = Buffer.alloc(WIDTH * WIDTH * 3);
-  var colors = [opts.bgcolor, opts.color, opts.spotcolor];
-  for (var i = 0, len = data.length; i < len; i++) {
-    var color = colors[data[i]];
-    var row = Math.floor(i/SIZE);
-    var col = i % SIZE;
-    for (var x = col * SCALE; x < (col + 1) * SCALE; x++) {
-      for (var y = row * SCALE; y < (row + 1) * SCALE; y++) {
-        var bo = ((WIDTH - 1 - y)*WIDTH + x)*3;
+function encodeTable(pixels, colors, scale) {
+  var header = Buffer.from('Qk02GwAAAAAAADYAAAAoAAAAMAAAADAAAAABABgAAAAAAAAbAAATCwAAEwsAAAAAAAAAAAAA', 'base64');
+  var size = Math.sqrt(pixels.length);
+  var width = size * scale;
+  if(width % 4 !== 0) throw new Error("Image width must be multiple of 4");
+  header.writeUInt32LE(width, 0x12);
+  header.writeUInt32LE(width, 0x16);
+  header.writeUInt32LE(width * width * 3, 0x22);
+  var outBuf = Buffer.alloc(width * width * 3);
+
+  for (var i = 0, len = pixels.length; i < len; i++) {
+    var color = colors[pixels[i]];
+    var row = Math.floor(i/size);
+    var col = i % size;
+    for (var x = col * scale; x < (col + 1) * scale; x++) {
+      for (var y = row * scale; y < (row + 1) * scale; y++) {
+        var bo = ((width - 1 - y)*width + x)*3;
         outBuf[bo + 0] = color[2]; //B
         outBuf[bo + 1] = color[1]; //G
         outBuf[bo + 2] = color[0]; //R
       }
     }
   }
-  return outBuf;
+  return "data:image/bmp;base64," + header.toString('base64') + outBuf.toString('base64');
 }
 
-function createIconAsDataURL (opts) {
-  var header = "data:image/bmp;base64,Qk02GwAAAAAAADYAAAAoAAAAMAAAADAAAAABABgAAAAAAAAbAAATCwAAEwsAAAAAAAAAAAAA";
-  return header + createIcon(opts).toString('base64');
+function createIcon(optsParam) {
+  var opts = buildOpts(optsParam || {});
+  var data = createImageData(opts.size);
+  var colors = [opts.bgcolor, opts.color, opts.spotcolor];
+  return encodeTable(data, colors, opts.scale);
 }
+
+console.log(createIcon({seed: '123123123', size: 12, scale: 1}))
+
 
 module.exports = {
-  createDataURL: createIconAsDataURL
+  createDataURL: createIcon
 };

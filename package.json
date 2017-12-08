@@ -1,6 +1,6 @@
 {
   "name": "blockies-bmp",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "A tiny library for generating blocky identicons in BMP format, with react-native support",
   "main": "blockies.js",
   "scripts": {
