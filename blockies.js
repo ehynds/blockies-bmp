@@ -134,9 +134,6 @@ function createIcon(optsParam) {
   return encodeTable(data, colors, opts.scale);
 }
 
-console.log(createIcon({seed: '123123123', size: 12, scale: 1}))
-
-
 module.exports = {
   createDataURL: createIcon
 };
