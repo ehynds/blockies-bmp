@@ -1,5 +1,5 @@
 var randseed = new Array(4); // Xorshift: [x, y, z, w] 32 bit values
-var Buffer = require('buffer');
+var Buffer = require('buffer').Buffer;
 
 function seedrand(seed) {
   for (var i = 0; i < randseed.length; i++) {
