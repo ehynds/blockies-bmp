@@ -16,5 +16,7 @@
     "url": "https://github.com/dvdbng/blockies-bmp/issues"
   },
   "homepage": "https://github.com/dvdbng/blockies-bmp#readme",
-  "dependencies": {}
+  "dependencies": {
+    "buffer": "^5.2.1"
+  }
 }
